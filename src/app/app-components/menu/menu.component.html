@@ -35,16 +35,16 @@
     </mat-menu>
 
     <button mat-button [matMenuTriggerFor]="user">
-      <mat-icon>search</mat-icon>
+      <mat-icon>person</mat-icon>
       <span>Usuarios</span>
     </button>
     <mat-menu #user="matMenu">
       <button mat-menu-item [routerLink]="['user', 'user-tables']">
-        <mat-icon>store_mall_directory</mat-icon>
+        <mat-icon>local_library</mat-icon>
         <span>Info de usuarios</span>
       </button>
-      <button mat-menu-item [routerLink]="['login']">
-        <mat-icon>store_mall_directory</mat-icon>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>arrow_forward</mat-icon>
         <span>Cerrar sesi&oacute;n</span>
       </button>
     </mat-menu>
