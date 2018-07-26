@@ -7,6 +7,7 @@ import {BlankLayoutComponent} from './blank-layout/blank-layout.component';
 import {AppLayoutComponent} from './app-layout/app-layout.component';
 import {CustomMaterialModule} from "./custom-material/custom-material.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

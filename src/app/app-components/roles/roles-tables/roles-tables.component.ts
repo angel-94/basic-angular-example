@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {RolesServiceService} from "../../../service/roles-service.service";
 
 export interface PeriodicElement {
   name: string;
@@ -27,9 +28,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class RolesTablesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private serv: RolesServiceService) { }
 
   ngOnInit() {
+    let responce = this.serv.getAllRoles();
+    console.log(responce);
   }
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];

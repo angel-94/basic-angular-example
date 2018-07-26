@@ -11,6 +11,7 @@ import {CustomMaterialModule} from "../custom-material/custom-material.module";
 import { MenuComponent } from './menu/menu.component';
 import { RolesTablesComponent } from './roles/roles-tables/roles-tables.component';
 import { UserTablesComponent } from './user/user-tables/user-tables.component';
+import {RolesServiceService} from "../service/roles-service.service";
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { UserTablesComponent } from './user/user-tables/user-tables.component';
     HelpComponent,
     MenuComponent,
     RolesTablesComponent,
-    UserTablesComponent
+    UserTablesComponent,
+    RolesServiceService
   ]
 })
 export class AppComponentsModule {
