@@ -18,7 +18,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTreeModule
-} from "@angular/material";
+} from '@angular/material';
 
 @NgModule({
   imports: [
