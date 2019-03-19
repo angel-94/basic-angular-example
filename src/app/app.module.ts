@@ -8,22 +8,31 @@ import {AppLayoutComponent} from './app-layout/app-layout.component';
 import {CustomMaterialModule} from './custom-material/custom-material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
+import {SpeechRecognitionModule} from '@kamiazya/ngx-speech-recognition';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BlankLayoutComponent,
-    AppLayoutComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    CustomMaterialModule,
-    HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        BlankLayoutComponent,
+        AppLayoutComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        CustomMaterialModule,
+        HttpClientModule,
+        SpeechRecognitionModule.withConfig(
+            {
+                lang: 'es',
+                interimResults: true,
+                maxAlternatives: 10,
+                continuous: true
+            }
+        )
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
