@@ -114,6 +114,7 @@ var AppComponentsModule = /** @class */ (function () {
                 _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                 _components_routing_module__WEBPACK_IMPORTED_MODULE_2__["ComponentsRoutingModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_8__["FormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ReactiveFormsModule"],
                 _custom_material_custom_material_module__WEBPACK_IMPORTED_MODULE_9__["CustomMaterialModule"]
             ],
             declarations: [
@@ -295,7 +296,7 @@ var HelpComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".example-full-width {\n    width: 100%;\n}\n"
 
 /***/ }),
 
@@ -306,7 +307,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar>\n  <mat-toolbar-row>\n    <span>Welcome to Meltsan App </span>\n  </mat-toolbar-row>\n</mat-toolbar>\n"
+module.exports = "<div class=\"container-fluid\">\n\n    <mat-card class=\"mat-elevation-z2\">\n        <mat-card-title>\n            <mat-toolbar>\n                <mat-toolbar-row>\n                    <span>Test SpeechRecognition </span>\n                </mat-toolbar-row>\n            </mat-toolbar>\n        </mat-card-title>\n\n        <mat-card-content class=\"mt-4\">\n            <p>Mensaje: {{message}}</p>\n            <div class=\"row\">\n                <div class=\"col\">\n                    <button mat-raised-button class=\"mr-3\" [disabled]=\"started\" (click)=\"start()\">Iniciar</button>\n                    <button mat-raised-button [disabled]=\"!started\" (click)=\"stop()\">Terminar</button>\n                </div>\n\n            </div>\n\n            <div class=\"mt-4 border-bottom\">\n\n                <form action=\"\" [formGroup]=\"frmSpeechDemo\" (ngSubmit)=\"onSubmit()\">\n\n                    <div class=\"row\">\n                        <div class=\"col-4\">\n                            <mat-form-field class=\"example-full-width\">\n                                <input matInput placeholder=\"Please say something!!!\"\n                                       formControlName=\"speech\"\n                                       (click)=\"valueForSpeechField()\">\n                                <mat-icon matSuffix>mic</mat-icon>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <button mat-raised-button type=\"submit\">Reset</button>\n                    </div>\n\n                </form>\n\n            </div>\n\n\n            <div class=\"row mt-5\">\n\n                <div class=\"col\">\n                    <p>Final form value </p>\n                    {{finalMessage | json}}\n                </div>\n\n            </div>\n\n\n        </mat-card-content>\n\n    </mat-card>\n\n</div>\n"
 
 /***/ }),
 
@@ -321,6 +322,8 @@ module.exports = "<mat-toolbar>\n  <mat-toolbar-row>\n    <span>Welcome to Melts
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeComponent", function() { return HomeComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _kamiazya_ngx_speech_recognition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kamiazya/ngx-speech-recognition */ "./node_modules/@kamiazya/ngx-speech-recognition/fesm5/kamiazya-ngx-speech-recognition.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -331,18 +334,67 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent() {
+    function HomeComponent(speechService) {
+        this.speechService = speechService;
+        this.started = false;
+        this.message = '';
     }
     HomeComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.initFrmSpeechDemo();
+        console.log('HomeComponent --> ', this.speechService);
+        this.speechService.onstart = function (e) {
+            console.log('onstart', e);
+        };
+        this.speechService.onresult = function (e) {
+            _this.message = e.results[0].item(0).transcript;
+            console.log('HomeComponent:onresult ---> ', _this.message, e);
+        };
+    };
+    HomeComponent.prototype.start = function () {
+        this.started = true;
+        this.speechService.start();
+    };
+    HomeComponent.prototype.stop = function () {
+        this.started = false;
+        this.speechService.stop();
+    };
+    HomeComponent.prototype.initFrmSpeechDemo = function () {
+        this.frmSpeechDemo = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+            speech: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]()
+        });
+    };
+    HomeComponent.prototype.onSubmit = function () {
+        console.log('form value --> ', this.frmSpeechDemo.value);
+        this.finalMessage = this.frmSpeechDemo.value;
+        this.frmSpeechDemo.reset();
+    };
+    HomeComponent.prototype.valueForSpeechField = function () {
+        var _this = this;
+        this.speechService.start();
+        this.speechService.onresult = function (e) {
+            var message = e.results[0].item(0).transcript;
+            _this.frmSpeechDemo.controls['speech'].setValue(message);
+            if (e.results[0].isFinal) {
+                _this.speechService.stop();
+                alert('Speech Recognition is ending. Please try again!');
+            }
+            console.log('HomeComponent:onresult ---> ', message, e);
+        };
     };
     HomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-home',
             template: __webpack_require__(/*! ./home.component.html */ "./src/app/app-components/home/home.component.html"),
-            styles: [__webpack_require__(/*! ./home.component.css */ "./src/app/app-components/home/home.component.css")]
+            styles: [__webpack_require__(/*! ./home.component.css */ "./src/app/app-components/home/home.component.css")],
+            providers: [
+                _kamiazya_ngx_speech_recognition__WEBPACK_IMPORTED_MODULE_1__["SpeechRecognitionService"],
+            ]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_kamiazya_ngx_speech_recognition__WEBPACK_IMPORTED_MODULE_1__["SpeechRecognitionService"]])
     ], HomeComponent);
     return HomeComponent;
 }());
@@ -369,7 +421,7 @@ module.exports = ".example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\" class=\"fixed-header\">\n  <mat-toolbar-row>\n    <span>Meltsan</span>\n    <!--<span><img src=\"../../../assets/img/logo.png\"></span>-->\n    <span class=\"example-fill-remaining-space\"></span>\n    <span class=\"align-center\"></span>\n    <span class=\"example-spacer\"></span>\n\n    <!--<button mat-button [matMenuTriggerFor]=\"home\">-->\n      <!--<mat-icon>library_books</mat-icon>-->\n      <!--<span>Home</span>-->\n    <!--</button>-->\n\n\n    <button mat-button [matMenuTriggerFor]=\"roles\">\n      <mat-icon>block</mat-icon>\n      <span>Roles</span>\n    </button>\n    <mat-menu #roles=\"matMenu\">\n      <button mat-menu-item [routerLink]=\"['roles', 'roles-tables']\">\n        <mat-icon>cloud_upload</mat-icon>\n        <span>Roles</span>\n      </button>\n    </mat-menu>\n\n    <button mat-button [matMenuTriggerFor]=\"help\">\n      <mat-icon>block</mat-icon>\n      <span>Ayuda</span>\n    </button>\n    <mat-menu #help=\"matMenu\">\n      <button mat-menu-item [routerLink]=\"['help']\">\n        <mat-icon>cloud_upload</mat-icon>\n        <span>Acerca de</span>\n      </button>\n    </mat-menu>\n\n    <button mat-button [matMenuTriggerFor]=\"user\">\n      <mat-icon>person</mat-icon>\n      <span>Usuarios</span>\n    </button>\n    <mat-menu #user=\"matMenu\">\n      <button mat-menu-item [routerLink]=\"['user', 'user-tables']\">\n        <mat-icon>local_library</mat-icon>\n        <span>Info de usuarios</span>\n      </button>\n      <button mat-menu-item (click)=\"logout()\">\n        <mat-icon>arrow_forward</mat-icon>\n        <span>Cerrar sesi&oacute;n</span>\n      </button>\n    </mat-menu>\n\n\n  </mat-toolbar-row>\n</mat-toolbar>\n\n<br>\n<br>\n"
+module.exports = "<mat-toolbar color=\"primary\" class=\"fixed-header\">\n    <mat-toolbar-row>\n        <span style=\"cursor: pointer;\" (click)=\"home()\">Meltsan</span>\n        <!--<span><img src=\"../../../assets/img/logo.png\"></span>-->\n        <span class=\"example-fill-remaining-space\"></span>\n        <span class=\"align-center\"></span>\n        <span class=\"example-spacer\"></span>\n\n        <!--<button mat-button [matMenuTriggerFor]=\"home\">-->\n        <!--<mat-icon>library_books</mat-icon>-->\n        <!--<span>Home</span>-->\n        <!--</button>-->\n\n\n        <button mat-button [matMenuTriggerFor]=\"roles\">\n            <mat-icon>rowing</mat-icon>\n            <span>Roles</span>\n        </button>\n        <mat-menu #roles=\"matMenu\">\n            <button mat-menu-item [routerLink]=\"['roles', 'roles-tables']\">\n                <mat-icon>perm_identity</mat-icon>\n                <span>Roles</span>\n            </button>\n        </mat-menu>\n\n        <button mat-button [matMenuTriggerFor]=\"help\">\n            <mat-icon>help_outline</mat-icon>\n            <span>Ayuda</span>\n        </button>\n        <mat-menu #help=\"matMenu\">\n            <button mat-menu-item [routerLink]=\"['help']\">\n                <mat-icon>help_outline</mat-icon>\n                <span>Acerca de</span>\n            </button>\n        </mat-menu>\n\n        <button mat-button [matMenuTriggerFor]=\"user\">\n            <mat-icon>person</mat-icon>\n            <span>Usuarios</span>\n        </button>\n        <mat-menu #user=\"matMenu\">\n            <button mat-menu-item [routerLink]=\"['user', 'user-tables']\">\n                <mat-icon>local_library</mat-icon>\n                <span>Info de usuarios</span>\n            </button>\n            <button mat-menu-item (click)=\"logout()\">\n                <mat-icon>arrow_forward</mat-icon>\n                <span>Cerrar sesi&oacute;n</span>\n            </button>\n        </mat-menu>\n\n\n    </mat-toolbar-row>\n</mat-toolbar>\n\n<br>\n<br>\n"
 
 /***/ }),
 
@@ -404,6 +456,9 @@ var MenuComponent = /** @class */ (function () {
     };
     MenuComponent.prototype.logout = function () {
         this.router.navigate(['login']);
+    };
+    MenuComponent.prototype.home = function () {
+        this.router.navigate(['app', 'home']);
     };
     MenuComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
