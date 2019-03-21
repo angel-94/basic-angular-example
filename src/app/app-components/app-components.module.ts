@@ -1,34 +1,45 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ComponentsRoutingModule} from './components-routing.module';
-import {AppComponentsComponent} from './app-components.component';
-import {HomeComponent} from './home/home.component';
-import {UserComponent} from './user/user.component';
-import {RolesComponent} from './roles/roles.component';
-import {HelpComponent} from './help/help.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CustomMaterialModule} from "../custom-material/custom-material.module";
-import {MenuComponent} from './menu/menu.component';
-import {RolesTablesComponent} from './roles/roles-tables/roles-tables.component';
-import {UserTablesComponent} from './user/user-tables/user-tables.component';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
+
+import { IonicModule } from '@ionic/angular';
+
+import { AppComponentsPage } from './app-components.page';
+import { HomeComponent } from './home/home.component';
+import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
+
+// import { SpeechRecognitionService } from '@kamiazya/ngx-speech-recognition';
+import { Platform } from '@ionic/angular';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: AppComponentsPage,
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent
+      },
+    ]
+  }
+];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        ComponentsRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        CustomMaterialModule
-    ],
-    declarations: [
-        AppComponentsComponent,
-        HomeComponent,
-        UserComponent,
-        RolesComponent,
-        HelpComponent,
-        MenuComponent,
-        RolesTablesComponent,
-        UserTablesComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule,
+    CustomMaterialModule,
+    RouterModule.forChild(routes)
+  ],
+  declarations: [AppComponentsPage, HomeComponent],
+  providers: [
+    SpeechRecognition,
+    // Platform
+    // SpeechRecognitionService,
+  ]
 })
-export class AppComponentsModule {
-}
+export class AppComponentsPageModule { }

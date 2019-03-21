@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Meltsan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <mat-card>
+      <mat-card-header class="ion-text-center">
+        <mat-card-title class="ion-text-center">Inicio de sesi&oacute;n</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxFlexAlign="center">
+
+
+        <form class="form">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Usuario" [(ngModel)]="username" name="username" required>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Contrase&ntilde;a" [(ngModel)]="password" type="password" name="password"
+              required>
+          </mat-form-field>
+
+        </form>
+        <!--<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>-->
+      </mat-card-content>
+      <mat-card-actions class="right">
+        <button mat-raised-button (click)="login()" color="primary">Login</button>
+      </mat-card-actions>
+    </mat-card>
+  </ion-card>
+
+</ion-content>

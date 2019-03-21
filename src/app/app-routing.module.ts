@@ -1,49 +1,23 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from "@angular/router";
-import {BlankLayoutComponent} from "./blank-layout/blank-layout.component";
-import {AppLayoutComponent} from "./app-layout/app-layout.component";
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-
-const ROUTE_APP: Routes = [
+const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    component: BlankLayoutComponent,
-    children: [
+    path: 'app', children: [
       {
         path: '',
-        loadChildren: './login/login.module#LoginModule'
+        loadChildren: './app-components/app-components.module#AppComponentsPageModule'
       }
     ]
   },
-  {
-    path: 'app',
-    component: AppLayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: './app-components/app-components.module#AppComponentsModule'
-      }
-    ]
-  }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      ROUTE_APP,
-      {
-        useHash: true
-      }
-    )
-  ], exports: [
-    RouterModule
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  declarations: []
+  exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }
