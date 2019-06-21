@@ -1,3 +1,5 @@
+[![TODO board](https://imdone.io/api/1.0/projects/5d0d2cd285257404ff3467d4/badge)](https://imdone.io/app#/board/angel-94/basic-angular-example)
+
 # CursoFront
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
