@@ -25,7 +25,7 @@
         "@kamiazya/ngx-speech-recognition": "^0.3.2",
         "angular-route": "^1.7.2",
         "bootstrap": "^4.3.1",
-        "core-js": "^2.5.4",
+        "core-js": "^2.6.12",
         "flex-layout-srcs": "^5.0.0-beta.14",
         "jquery": "^3.3.1",
         "rxjs": "^6.4.0",
